@@ -5,6 +5,7 @@ import "hardhat/console.sol";
 
 contract WavePortal {
     uint totalWaves;
+    uint private seed;
 
     event Newwave (address indexed from , uint timestamp , string message);
 
@@ -28,11 +29,20 @@ contract WavePortal {
         
         emit Newwave(msg.sender, block.timestamp, _message);
 
+        //generate new sdo no
+        uint randomno = (block.difficulty + block.timestamp + seed) % 100;
 
+        console.log("random generated no ", randomno);
+
+        seed = randomno;
+        if(randomno < 50){
+            console.log("%s won",msg.sender);
         uint prizeAmount = 0.0001 ether;
-        require(prizeAmount <= address(this).balance, "Trying to withdraw more money than the contract has");
+        require(prizeAmount <= address(this).balance, "Contract does not have money ohh");
         (bool success, )= (msg.sender).call{value : prizeAmount}("");
         require(success, "Failed to withdraw money from contracts");
+
+        }
 
 
 
