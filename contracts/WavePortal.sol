@@ -8,7 +8,8 @@ contract WavePortal {
     uint private seed;
 
     event Newwave (address indexed from , uint timestamp , string message);
-
+    
+    mapping (address => uint)public lastWavedAt;
     struct Wave{
         address waver;
         string message;
@@ -22,6 +23,9 @@ contract WavePortal {
     }
 
     function wave(string memory _message) public {
+
+        require(lastWavedAt[msg.sender] + 55 seconds < block.timestamp,"Wait 55sec");
+        lastWavedAt[msg.sender] = block.timestamp; 
         totalWaves += 1;
         console.log("%s is waved ", msg.sender , _message );
 
