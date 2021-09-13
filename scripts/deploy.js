@@ -1,5 +1,7 @@
 // const {hexStripZeroes} = require("@ethersproject/bytes")
 
+const { ethers } = require("hardhat");
+
 // const { ethers } = require("ethers");
 
 async function main() {
@@ -9,10 +11,15 @@ async function main() {
 
   console.log("Account Balance ", (await deployer.getBalance()).toString());
 
-  const Token = await ethers.getContractFactory("WavePortal");
-  const token = await Token.deploy();
+  // const Token = await ethers.getContractFactory("WavePortal");
+  // const token = await Token.deploy();
+  const waveContractFactory = await ethers.getContractFactory("WavePortal");
+  const waveContract = await waveContractFactory.deploy({
+    value: ethers.utils.parseEther("0.1"),
+  });
+  await waveContract.deployed();
 
-  console.log("Wave Portal ", token.address);
+  console.log("Wave Portal ", waveContract.address);
 }
 
 main()
