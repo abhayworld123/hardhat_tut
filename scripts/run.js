@@ -1,6 +1,6 @@
 // const {hexStripZeroes} = require("@ethersproject/bytes")
 
-const { ethers } = require("ethers");
+// const { ethers } = require("ethers");
 
 async function main() {
   const [owner, randoperson] = await ethers.getSigners();
@@ -14,15 +14,14 @@ async function main() {
   let waveCount;
   waveCount = await waveContract.getTotalWaves();
 
-  let waveTxn = await waveContract.wave();
+  let waveTxn = await waveContract.wave(" this is message");
   await waveTxn.wait();
 
-  waveCount = await waveContract.getTotalWaves();
-
-  waveTxn = await waveContract.connect(randoperson).wave();
+  waveTxn = await waveContract.wave(" this is another message");
   await waveTxn.wait();
 
-  waveCount = await waveContract.getTotalWaves();
+  let allWaves = await waveContract.getAllWaves();
+  console.log(allWaves);
 }
 
 main()
